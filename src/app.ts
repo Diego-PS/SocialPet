@@ -1,5 +1,7 @@
 import express from 'express'
 import { TestDB } from './database/models/TestDB'
+import path from 'path'
+import { db } from './database'
 
 export const app = express()
 
@@ -14,4 +16,15 @@ app.post('/', async (req, res) => {
     Object.assign(testDB, {text, num})
     await testDB.save()
     res.send({ msg: `Created test with text ${text} and num ${num}` })
+})
+
+app.post('/upload', async (req, res) => {
+    const filePath = path.join(__dirname, 'teste.txt')
+    db.bucket.uploadFile(filePath)
+    res.send({ status: 'Finished' })
+})
+
+app.get('/download', async (req, res) => {
+    db.bucket.downloadFile()
+    res.send({ status: 'Downloaded' })
 })
