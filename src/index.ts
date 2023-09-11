@@ -1,12 +1,14 @@
 import { app } from './app'
 import { config } from './config'
-import { db } from './database'
+import { db } from './database/Database'
 
 const { port } = config
 
-db.connect().then(() => {
-    console.log(`Connected to database`)
+const run = async () => {
+    await db.setup()
     app.listen(port, () => {
         console.log(`Server is running on port ${port}`)
     })
-}).catch((err) => console.error(err))
+}
+
+run().catch((err) => console.error(err))

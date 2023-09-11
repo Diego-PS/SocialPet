@@ -1,14 +1,7 @@
-import mongoose from 'mongoose'
 import fs from 'fs'
+import { Bucket } from '../interfaces/Bucket'
 
-export class GridFSBucket {
-
-    constructor(private bucket: mongoose.mongo.GridFSBucket) {}
-
-    // constructor() {
-    //     const db = mongoose.connection.db
-    //     this.bucket = new mongoose.mongo.GridFSBucket(db, { bucketName: "bucket" })
-    // }
+export class BucketDB extends Bucket {
 
     public uploadFile = (path: fs.PathLike) => {
         fs.createReadStream(path)

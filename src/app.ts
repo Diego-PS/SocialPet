@@ -1,7 +1,7 @@
 import express from 'express'
 import { TestDB } from './database/models/TestDB'
 import path from 'path'
-import { db } from './database'
+import { db } from './database/Database'
 
 export const app = express()
 
@@ -20,11 +20,11 @@ app.post('/', async (req, res) => {
 
 app.post('/upload', async (req, res) => {
     const filePath = path.join(__dirname, 'teste.txt')
-    db.bucket.uploadFile(filePath)
+    db.buckets.media.uploadFile(filePath)
     res.send({ status: 'Finished' })
 })
 
 app.get('/download', async (req, res) => {
-    db.bucket.downloadFile()
+    db.buckets.media.downloadFile()
     res.send({ status: 'Downloaded' })
 })
