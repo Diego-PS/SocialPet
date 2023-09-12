@@ -5,14 +5,13 @@ export class BucketDB extends Bucket {
 
     public uploadFile = (path: fs.PathLike) => {
         fs.createReadStream(path)
-            .pipe(this.bucket.openUploadStream('video', {
+            .pipe(this.bucket.openUploadStream(path.toLocaleString(), {
                 chunkSizeBytes: 1048576,
-                metadata: { field: 'video', value: 'myValue' }
             }))
     }
 
     public downloadFile = () => {
-        this.bucket.openDownloadStreamByName('video')
-            .pipe(fs.createWriteStream('./video.mp4'));
+        this.bucket.openDownloadStreamByName('image')
+            .pipe(fs.createWriteStream('./image.png'));
     }
 }

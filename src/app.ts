@@ -25,11 +25,15 @@ app.post('/upload', multer({ dest: 'tmp/' }).single('form'), async (req, res) =>
     }
     const filePath = req.file?.path
     db.buckets.media.uploadFile(filePath)
-    res.send({ status: 'Finished' })
+    // res.send({ status: 'Finished' })
+    return res.send({ name: req.file.originalname })
 })
 
 app.get('/download', async (req, res) => {
     db.buckets.media.downloadFile()
     res.send({ status: 'Downloaded' })
 })
+
+
+app.use('/uploads', express.static('tmp/uploads'))
 

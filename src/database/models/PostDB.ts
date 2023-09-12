@@ -1,12 +1,11 @@
 import { Schema, model } from 'mongoose'
-import { ITest } from '../../entities/Test'
 import { IPost } from '../../entities/Post'
 
-export const testSchema = new Schema<IPost>({
+export const postSchema = new Schema<IPost>({
     id: { type: String, unique: true, required: true },
-    petId: { type: String },
-    textFileId: { type: String, unique: true },
+    petId: { type: String, unique: true, required: true },
+    textContent: { type: String },
     mediaFileId: { type: String, unique: true },
 })
 
-export const TestDB = model<ITest>('Test', testSchema)
+export const PostDB = model<IPost>('Post', postSchema)

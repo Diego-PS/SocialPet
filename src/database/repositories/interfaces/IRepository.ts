@@ -1,0 +1,10 @@
+export interface IRepository<IEntity>
+{
+    create: (payload: IEntity) => Promise<IEntity>
+    get: (filter?: Partial<IEntity>) => Promise<IEntity[]>
+    getById: (id: string) => Promise<IEntity>
+    getByIds: (ids: string[]) => Promise<IEntity[]>
+    update: (id: string, payload: Partial<IEntity>) => Promise<IEntity>
+    delete: (filter?: Partial<IEntity>) => Promise<void>
+    deleteByIds: (ids: string[]) => Promise<void>
+}
