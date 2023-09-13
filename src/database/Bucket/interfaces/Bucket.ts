@@ -18,6 +18,6 @@ export abstract class Bucket
         this.bucket = createBucket(params.database, this.name)
     }
 
-    public abstract uploadFile: (path: fs.PathLike) => void
-    public abstract downloadFile: () => void
+    public abstract uploadFile: (path: fs.PathLike) => { name: string }
+    public abstract downloadFile: (name: string, destinyDir: string) => void
 }

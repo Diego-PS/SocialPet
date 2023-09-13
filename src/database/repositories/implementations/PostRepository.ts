@@ -1,4 +1,4 @@
-import { IPost } from '../../../entities/Post'
+import { IPost } from '../../../interfaces/IPost'
 import { PostDB } from '../../models/PostDB'
 import { IRepository } from '../interfaces/IRepository'
 

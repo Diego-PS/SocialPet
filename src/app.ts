@@ -3,6 +3,7 @@ import { TestDB } from './database/models/TestDB'
 import path from 'path'
 import { db } from './database/Database'
 import multer from 'multer'
+import fs from 'fs'
 
 export const app = express()
 
@@ -25,6 +26,8 @@ app.post('/upload', multer({ dest: 'tmp/' }).single('form'), async (req, res) =>
     }
     const filePath = req.file?.path
     db.buckets.media.uploadFile(filePath)
+    const extension = req.file.originalname.split('.').slice(0, -1)
+    await fs.promises.rename(filePath, `${filePath}.${extension}`)
     // res.send({ status: 'Finished' })
     return res.send({ name: req.file.originalname })
 })

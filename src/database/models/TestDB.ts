@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { ITest } from '../../entities/Test'
+import { ITest } from '../../interfaces/ITest'
 
 
 export const testSchema = new Schema<ITest>({

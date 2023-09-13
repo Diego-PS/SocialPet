@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose'
-import { IPost } from '../../entities/Post'
+import { IPost } from '../../interfaces/IPost'
 
 export const postSchema = new Schema<IPost>({
     id: { type: String, unique: true, required: true },
-    petId: { type: String, unique: true, required: true },
     textContent: { type: String },
     mediaFileId: { type: String, unique: true },
 })
