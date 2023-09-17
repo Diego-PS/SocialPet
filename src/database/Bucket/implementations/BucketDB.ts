@@ -1,26 +1,32 @@
 import fs from 'fs'
 import { Bucket } from '../interfaces/Bucket'
 import { config } from '../../../config'
+import stream from 'stream'
 import mongoose from 'mongoose'
 
 export class BucketDB extends Bucket {
 
-    public uploadFile = (fileId: string) => 
+    public uploadFile = async (fileId: string) => 
     {
         // implementation here...
         const path = `${config.UPLOADS_PATH}/${fileId}`
-        fs.createReadStream(path)
-            .pipe(this.bucket.openUploadStream(fileId.toLocaleString(), {
+        await stream.promises.pipeline(
+            fs.createReadStream(path),
+            this.bucket.openUploadStream(fileId.toLocaleString(), {
                 chunkSizeBytes: 1048576,
-            }))
+            })
+        )
+        await fs.promises.unlink(path)
     }
 
-    public downloadFile = (name: string, destinyDir: string) => 
+    public downloadFile = async (name: string, destinyDir: string) => 
     {
         // implementation here...
         const originPath = `${destinyDir}/${name}`
-        this.bucket.openDownloadStreamByName(name)
-            .pipe(fs.createWriteStream(originPath));
+        await stream.promises.pipeline(
+            this.bucket.openDownloadStreamByName(name),
+            fs.createWriteStream(originPath)
+        )
     }
 
     public deleteFile = async (fileId: string) => 

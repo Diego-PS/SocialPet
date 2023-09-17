@@ -1,6 +1,7 @@
 import { IPost } from '../interfaces/IPost'
 import { v4 } from 'uuid'
 import { services } from '../services'
+import { Pagination } from '../types/Pagination'
 
 export interface IPostParams {
     textContent?: string,
@@ -20,7 +21,7 @@ export class Post implements IPost
         return newPost
     }
     
-    public static getAll = async () => await services.post.getAll()
+    public static getAll = async (pagination?: Pagination) => await services.post.getAll(pagination)
     public static get = async (id: string) => await services.post.getById(id)
 
 

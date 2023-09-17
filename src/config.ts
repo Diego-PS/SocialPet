@@ -11,4 +11,5 @@ export const config = {
     },
     DOWNLOADS_PATH: 'tmp/downloads',
     UPLOADS_PATH: 'tmp/uploads',
+    APP_URL: `http://localhost:${process.env.PORT}`,
 }

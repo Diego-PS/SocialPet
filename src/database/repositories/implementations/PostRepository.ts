@@ -1,4 +1,5 @@
 import { IPost } from '../../../interfaces/IPost'
+import { Pagination } from '../../../types/Pagination'
 import { PostDB } from '../../models/PostDB'
 import { IRepository } from '../interfaces/IRepository'
 
@@ -15,10 +16,11 @@ export class PostRepository implements IRepository<IPost>
         return created_post_interface
     }
     
-    async get(filter?: Partial<IPost>) 
+    async get(filter?: Partial<IPost>, pagination?: Pagination) 
     {
         // Implementation here...
-        const postsDB = await PostDB.find({...filter})
+        const limit = pagination ? { skip: pagination.getOffset(), limit: pagination.itensPerPage } : undefined
+        const postsDB = await PostDB.find({...filter}, limit)
         const posts_interface = postsDB as IPost[]
         return posts_interface
     }
@@ -29,10 +31,11 @@ export class PostRepository implements IRepository<IPost>
         return (await this.get({ id }))[0]
     }
 
-    async getByIds(ids: string[]) 
+    async getByIds(ids: string[], pagination?: Pagination) 
     {
         // Implementation here...
-        const postsDB = await PostDB.find({ id: { $in: ids } })
+        const limit = pagination ? { skip: pagination.getOffset(), limit: pagination.itensPerPage } : undefined
+        const postsDB = await PostDB.find({ id: { $in: ids } }, limit)
         const posts_interface = postsDB as IPost[]
         return posts_interface
     }

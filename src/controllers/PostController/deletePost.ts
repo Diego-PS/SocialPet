@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { ErrorBody } from '../ErrorBody'
 import { Post } from '../../entities/Post'
+import { ErrorBody } from '../../types/ErrorBody'
 
 interface DeletePostReqParams {
     id: string
