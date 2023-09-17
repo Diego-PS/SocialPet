@@ -4,6 +4,7 @@ import path from 'path'
 import { db } from './database/Database'
 import multer from 'multer'
 import fs from 'fs'
+import { Post } from './entities/Post'
 
 export const app = express()
 
@@ -20,20 +21,25 @@ app.post('/', async (req, res) => {
     res.send({ msg: `Created test with text ${text} and num ${num}` })
 })
 
-app.post('/upload', multer({ dest: 'tmp/' }).single('form'), async (req, res) => {
+app.post('/upload', multer({ dest: 'tmp/uploads/' }).single('form'), async (req, res) => {
     if (!req.file?.path) {
         return res.status(500).send({ error: 'Upload was unsuccessful' })
     }
     const filePath = req.file?.path
-    db.buckets.media.uploadFile(filePath)
-    const extension = req.file.originalname.split('.').slice(0, -1)
+    console.log(req.file.originalname)
+    console.log(req.file.originalname.split('.'))
+    const extension = req.file.originalname.split('.').at(-1)
+    const newName = `${req.file.filename}.${extension}`
     await fs.promises.rename(filePath, `${filePath}.${extension}`)
     // res.send({ status: 'Finished' })
-    return res.send({ name: req.file.originalname })
+    console.log(newName)
+    await Post.create({ mediaId: newName })
+    return res.send({ name: newName })
 })
 
-app.get('/download', async (req, res) => {
-    db.buckets.media.downloadFile()
+app.get('/download/:id', async (req, res) => {
+    const post = await Post.get(req.params.id)
+    await post.download()
     res.send({ status: 'Downloaded' })
 })
 

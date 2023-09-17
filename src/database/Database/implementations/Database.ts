@@ -10,7 +10,7 @@ export class Database extends AbstractDatabase
     protected connect = async () => 
     {
         // Connect implementation here...
-        await mongoose.connect(`mongodb://${config.db.local.user}`)
+        await mongoose.connect(`mongodb://${config.DB.LOCAL.USER}`)
 
         // Successfully connected
         console.log(`Connected to database`)

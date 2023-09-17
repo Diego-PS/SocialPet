@@ -1,30 +1,39 @@
 import { IPost } from '../interfaces/IPost'
-import fs from 'fs'
 import { v4 } from 'uuid'
 import { services } from '../services'
 
-export interface PostParams {
-    id?: string
-    textContent?: string
-    mediaPath?: string
+export interface IPostParams {
+    textContent?: string,
+    mediaId?: string,
 }
 
-export class Post implements IPost {
-
+export class Post implements IPost 
+{
+    public static create = async (params: IPostParams) => 
+    {
+        const id = v4()
+        const newPost = await services.post.create({ 
+            id, 
+            textContent: params.textContent,
+            mediaFileId: params.mediaId,
+        })
+        return newPost
+    }
+    
     public static getAll = async () => await services.post.getAll()
+    public static get = async (id: string) => await services.post.getById(id)
+
 
     id: string
     textContent?: string
     mediaFileId?: string
 
-    private initialized = false
-
-    constructor(params: PostParams) {
-        this.id = params.id ?? v4()
+    constructor(params: IPost) {
+        this.id = params.id
         this.textContent = params.textContent
-        this.mediaFileId = params.mediaPath
+        this.mediaFileId = params.mediaFileId
     }
 
-    public create = async () => await services.post.create(this)
-
+    public download = async () => await services.post.download(this.id)
+    public delete = async () => await services.post.deleteById(this.id)
 }
