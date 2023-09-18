@@ -23,6 +23,7 @@ export class PostServices
     async download(id: string)
     {
         const post = await repositories.post.getById(id)
+        if (!fs.existsSync(config.DOWNLOADS_PATH)) fs.mkdirSync(config.DOWNLOADS_PATH)
         if (post.mediaFileId && !fs.existsSync(`${config.DOWNLOADS_PATH}/${post.mediaFileId}`)) 
             await db.buckets.media.downloadFile(post.mediaFileId, config.DOWNLOADS_PATH)
         return { url: `${config.APP_URL}/static/${post.mediaFileId}` }
