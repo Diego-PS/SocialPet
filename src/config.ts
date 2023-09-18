@@ -6,8 +6,11 @@ export const config = {
     PORT: process.env.PORT,
     DB: {
         LOCAL: {
-            USER: process.env.DB_LOCAL_USER
-        }
+            URL: process.env.DB_LOCAL_CONNECTION,
+        },
+        CLOUD: {
+            URL: process.env.DB_CLOUD_CONNECTION,
+        },
     },
     DOWNLOADS_PATH: 'tmp/downloads',
     UPLOADS_PATH: 'tmp/uploads',
