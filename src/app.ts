@@ -12,7 +12,7 @@ import bodyParser from 'body-parser'
 export const app = express()
 
 app.get('/', (req, res) => {
-    res.send({ satus: 'OK' })
+    res.send({ satus: 'Main route' })
 })
 
 app.post('/', async (req, res) => {
