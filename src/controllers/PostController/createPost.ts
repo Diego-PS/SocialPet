@@ -11,7 +11,7 @@ export type CreatePostRequest = Request<{}, {}, CreatePostReqBody>
 
 interface CreatePostResBody {
     id: string,
-    fileId?: string,
+    fileId: string,
     textContent?: string,
 }
 
@@ -23,7 +23,7 @@ export const createPost = async (req: CreatePostRequest, res: CreatePostResponse
         if (!req.file?.path) {
             return res.status(500).send({ error: 'Upload was unsuccessful' })
         }
-        const filePath = req.file?.path
+        const filePath = req.file.path
         const extension = req.file.originalname.split('.').at(-1)
         console.log(req.file.path)
         const newName = `${req.file.filename}.${extension}`

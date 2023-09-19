@@ -10,7 +10,7 @@ export type DeletePostRequest = Request<DeletePostReqParams, {}, {}>
 
 interface DeletePostResBody {
     textContent?: string,
-    mediaFileId?: string
+    mediaFileId: string
 }
 
 export type DeletePostResponse = Response<ErrorBody | DeletePostResBody>

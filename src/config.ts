@@ -5,14 +5,7 @@ dotenv.config()
 
 export const config = {
     PORT: process.env.PORT,
-    DB: {
-        LOCAL: {
-            URL: process.env.DB_LOCAL_CONNECTION,
-        },
-        CLOUD: {
-            URL: process.env.DB_CLOUD_CONNECTION,
-        },
-    },
+    DB_CONNECTION: process.env.DB_CONNECTION,
     DOWNLOADS_PATH: path.join(__dirname, '../tmp/downloads'),
     UPLOADS_PATH: path.join(__dirname, '../tmp/uploads'),
     APP_URL: process.env.APP_URL,

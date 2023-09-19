@@ -5,7 +5,7 @@ import { Pagination } from '../types/Pagination'
 
 export interface IPostParams {
     textContent?: string,
-    mediaId?: string,
+    mediaId: string,
 }
 
 export class Post implements IPost 
@@ -27,7 +27,7 @@ export class Post implements IPost
 
     id: string
     textContent?: string
-    mediaFileId?: string
+    mediaFileId: string
 
     constructor(params: IPost) {
         this.id = params.id
