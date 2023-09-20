@@ -3,7 +3,7 @@ import { db } from '../database/Database'
 import { repositories } from '../database/repositories'
 import { Post } from '../entities/Post'
 import { IPost } from '../interfaces/IPost'
-import { Pagination } from '../types/Pagination'
+import { Pagination } from '../abstractions/Pagination'
 import fs from 'fs'
 
 export class PostServices

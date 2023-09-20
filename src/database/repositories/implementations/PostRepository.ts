@@ -1,5 +1,5 @@
 import { IPost } from '../../../interfaces/IPost'
-import { Pagination } from '../../../types/Pagination'
+import { Pagination } from '../../../abstractions/Pagination'
 import { PostDB } from '../../models/PostDB'
 import { IRepository } from '../interfaces/IRepository'
 

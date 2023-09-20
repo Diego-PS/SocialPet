@@ -1,7 +1,7 @@
 import { IPost } from '../interfaces/IPost'
 import { v4 } from 'uuid'
 import { services } from '../services'
-import { Pagination } from '../types/Pagination'
+import { Pagination } from '../abstractions/Pagination'
 
 export interface IPostParams {
     textContent?: string,

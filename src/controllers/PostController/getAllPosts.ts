@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { IPagination, Pagination } from '../../types/Pagination'
+import { IPagination, Pagination } from '../../abstractions/Pagination'
 import { IPost } from '../../interfaces/IPost'
 import { ErrorBody } from '../../types/ErrorBody'
 import { Post } from '../../entities/Post'
