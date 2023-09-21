@@ -1,23 +1,30 @@
-import { Test } from './Test'
+import { Test } from '../Test'
 
 export class Describe
 {
-    public content: () => void
+    public describe: () => void
     constructor(public description: string, public children: Describe[] | Test[]) 
     {
+        if (description === '') throw new Error('A test must have a description')
         if (children.length == 0) throw new Error('You must have a least one test')
-        children[0]
+
         if (children[0] instanceof Test) {
             const tests = children as Test[]
-            this.content = () => {
+            const content = () => {
                 tests.forEach(child => test(child.description, child.test))
             }
-        } else if (children[0] instanceof Describe) {
+            this.describe = () => describe(description, content)
+        } 
+        else if (children[0] instanceof Describe) 
+        {
             const describes = children as Describe[]
-            this.content = () => {
-                describes.forEach(child => describe(child.description, child.content))
+            const content = () => {
+                describes.forEach(child => child.describe())
             }
-        } else {
+            this.describe = () => describe(description, content)
+        } 
+        else 
+        {
             throw new Error(`Type of children doesn't match neither Describe nor Test`)
         }
     }
