@@ -5,11 +5,11 @@ import { IRepository } from '../../interfaces/IRepository'
 
 export class PostRepository implements IRepository<IPost>
 {
-    async create(payload: IPost) 
+    async create(post: IPost)
     {
         // Implementation here...
         const postDB = new PostDB()
-        Object.assign(postDB, payload)
+        Object.assign(postDB, post)
         const created_postDB = await postDB.save()
         const created_post_interface = created_postDB as IPost
         return created_post_interface
@@ -39,10 +39,10 @@ export class PostRepository implements IRepository<IPost>
         return posts_interface
     }
 
-    async update(id: string, user: Partial<IPost>) 
+    async update(id: string, post: Partial<IPost>) 
     {
         // Implementation here...
-        await PostDB.updateOne({ id }, user)
+        await PostDB.updateOne({ id }, post)
         const updatedPost = await this.getById(id)
         return updatedPost
     }
