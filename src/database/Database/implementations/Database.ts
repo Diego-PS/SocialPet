@@ -1,16 +1,15 @@
 import mongoose from 'mongoose'
 import { Buckets } from '../../Bucket/interfaces/Buckets'
 import { AbstractDatabase } from '../interfaces/AbstractDatabase'
-import { config } from '../../../config'
 
 export class Database extends AbstractDatabase 
 {
     public buckets!: Buckets
 
-    protected connect = async () => 
+    protected connect = async (uri: string) => 
     {
         // Connect implementation here...
-        await mongoose.connect(`${config.DB_CONNECTION}`)
+        await mongoose.connect(uri)
 
         // Successfully connected
         console.log(`Connected to database`)
