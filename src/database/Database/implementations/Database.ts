@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import { Buckets } from '../../Bucket/interfaces/Buckets'
 import { AbstractDatabase } from '../interfaces/AbstractDatabase'
+import { PostDB } from '../../models/PostDB'
 
 export class Database extends AbstractDatabase 
 {
@@ -23,6 +24,17 @@ export class Database extends AbstractDatabase
 
         // Successfully setted up the buckets
         console.log(`Setted up the buckets`)
+    }
+
+    public clear = async () => 
+    {
+        // Clear implementation here...
+        const collections = await mongoose.connection.db?.collections();
+        if (!collections) return
+
+        for (let collection of collections) {
+            await collection.deleteMany({})
+        }
     }
 
 }

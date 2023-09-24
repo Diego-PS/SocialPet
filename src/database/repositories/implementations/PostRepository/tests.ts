@@ -2,12 +2,13 @@ import { v4 } from 'uuid'
 import { Test } from '../../../../abstractions/Test/Test'
 import { repositories } from '../..'
 import { IPost } from '../../../../interfaces/IPost'
+import { Describe } from '../../../../abstractions/Test/Describe'
 
 const generatePost = (args?: { withTextContent?: boolean }) => {
     const id = v4()
     const mediaFileId = v4()
     const textContent = args?.withTextContent ? 'Some text content' : undefined
-    const post = { id, mediaFileId, textContent }
+    const post = { id, mediaFileId, textContent } as IPost
     return post
 }
 
@@ -24,7 +25,7 @@ const tests =
         const post = generatePost({ withTextContent: true })
         expect(post.id).toBeDefined()
         expect(post.mediaFileId).toBeDefined()
-        expect(post.mediaFileId).toBe('Some text content')
+        expect(post.textContent).toBe('Some text content')
     }),
 
     new Test('create without textContent', async () => {
@@ -45,7 +46,9 @@ const tests =
         const post = generatePost()
         await repositories.post.create(post)
         const updatedPost = await repositories.post.update(post.id, { mediaFileId: 'new mediaFileId' })
-        expect(updatedPost as Omit<IPost, 'mediaFileId'>).toEqual(post as Omit<IPost, 'mediaFileId'>)
+        const { mediaFileId: postMediaFileId, ...postRest } = post
+        const { mediaFileId: updatedPostMediaFileId, ...updatedPostRest } = updatedPost
+        expect(postRest).toEqual(updatedPostRest)
         expect(updatedPost.mediaFileId).toBe('new mediaFileId')
     }),
 
@@ -53,8 +56,10 @@ const tests =
         const post = generatePost({ withTextContent: true })
         await repositories.post.create(post)
         const updatedPost = await repositories.post.update(post.id, { textContent: 'new textContent' })
-        expect(updatedPost as Omit<IPost, 'mediaFileId'>).toEqual(post as Omit<IPost, 'mediaFileId'>)
-        expect(updatedPost.mediaFileId).toBe('new textContent')
+        const { textContent: postTextContent, ...postRest } = post
+        const { textContent: updatedPostTextContent, ...updatedPostRest } = updatedPost
+        expect(postRest).toEqual(updatedPostRest)
+        expect(updatedPost.textContent).toBe('new textContent')
     }),
 
     new Test('get', async () => {
@@ -75,25 +80,22 @@ const tests =
         expect(retrievedPosts).toEqual(expect.arrayContaining([posts[0], posts[2]]))
     }),
 
-    new Test('delete with existing id', async () => {
+    new Test('delete', async () => {
         const post = generatePost()
         await repositories.post.create(post)
         await repositories.post.delete({ mediaFileId: post.mediaFileId })
         const retrievedPosts = await repositories.post.get({ id: post.id })
         expect(retrievedPosts.length).toBe(0)
+    }),
+
+    new Test('delete by ids', async () => {
+        const posts = [generatePost(), generatePost(), generatePost()]
+        for (const post of posts) 
+            await repositories.post.create(post)
+        await repositories.post.deleteByIds([posts[0].id, posts[2].id])
+        const retrievedPosts = await repositories.post.get()
+        expect(retrievedPosts.length).toBe(1)
     })
 ]
 
-// export const invalidArguments = new Describe('Invalid arguments', tests)
-
-// test('Create user', async () => {
-//     const id = v4()
-//     const post = {
-//         id,
-//         mediaFileId: 'test'
-//     }
-//     await repositories.post.create(post)
-//     const newPost = await repositories.post.getById(id)
-//     expect(newPost.id).toBe(post.id)
-// })
-
+export const postRepositoryTets = new Describe('Post Repository Tests', tests)
