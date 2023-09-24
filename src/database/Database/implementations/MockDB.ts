@@ -1,25 +1,24 @@
 import mongoose from 'mongoose'
 import { Buckets } from '../../Bucket/interfaces/Buckets'
 import { AbstractDatabase } from '../interfaces/AbstractDatabase'
-import { config } from '../../../config'
+import { MongoMemoryServer } from 'mongodb-memory-server'
 
-export class Database extends AbstractDatabase 
+export class MockDB extends AbstractDatabase 
 {
     public buckets!: Buckets
+    private mongod?: MongoMemoryServer
 
     protected connect = async () => 
     {
         // Connect implementation here...
-        await mongoose.connect(`${config.DB_CONNECTION}`)
-
-        // Successfully connected
-        console.log(`Connected to database`)
+        this.mongod = await MongoMemoryServer.create()
+        const uri = this.mongod.getUri()
+        await mongoose.connect(uri)
     }
 
     public disconnect = async () =>
     {
-        // Disconnect implementation here...
-        await mongoose.disconnect()
+        await this.mongod?.stop()
     }
     
     protected setupBuckets = () =>
@@ -27,9 +26,6 @@ export class Database extends AbstractDatabase
         // Setup implementation here...
         const db = mongoose.connection.db
         this.buckets = new Buckets({ database: db })
-
-        // Successfully setted up the buckets
-        console.log(`Setted up the buckets`)
     }
 
     public clear = async () => 

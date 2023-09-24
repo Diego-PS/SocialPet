@@ -1,4 +1,5 @@
 import { Test } from '../Test'
+import { useMockDB } from './useMockDB'
 
 export class Describe
 {
@@ -27,5 +28,10 @@ export class Describe
         {
             throw new Error(`Type of children doesn't match neither Describe nor Test`)
         }
+    }
+
+    public integration = () => {
+        useMockDB()
+        this.describe()
     }
 }

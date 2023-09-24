@@ -4,14 +4,15 @@ export abstract class AbstractDatabase
 {
     public abstract buckets: Buckets
 
-    constructor(protected uri: string) {}
+    constructor() {}
 
-    protected abstract connect: (uri: string) => Promise<void>
+    protected abstract connect: () => Promise<void>
     protected abstract setupBuckets: () => void
     public abstract clear: () => Promise<void>
+    public abstract disconnect: () => Promise<void>
 
     public setup = async () => {
-        await this.connect(this.uri)
+        await this.connect()
         this.setupBuckets()
     }
 }

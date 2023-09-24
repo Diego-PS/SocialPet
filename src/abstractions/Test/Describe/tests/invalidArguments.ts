@@ -14,7 +14,7 @@ const tests =
     }),
 
     new Test('Children with wrong type', () => {
-        const functionWithError = () => new Describe('test', [{ description: 'hello', test: () => {}, a: 'b' } as Test])
+        const functionWithError = () => new Describe('test', [{ description: 'hello' } as Test])
         expect(functionWithError).toThrowError(`Type of children doesn't match neither Describe nor Test`)
     })
 ]
