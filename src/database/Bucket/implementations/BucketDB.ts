@@ -22,11 +22,17 @@ export class BucketDB extends Bucket {
     public downloadFile = async (name: string, destinyDir: string) => 
     {
         // implementation here...
-        const originPath = `${destinyDir}/${name}`
-        await stream.promises.pipeline(
-            this.bucket.openDownloadStreamByName(name),
-            fs.createWriteStream(originPath)
-        )
+        const destinyPath = `${destinyDir}/${name}`
+        try {
+            await stream.promises.pipeline(
+                this.bucket.openDownloadStreamByName(name),
+                fs.createWriteStream(destinyPath)
+            )
+        } catch (err) {
+            if (fs.existsSync(destinyPath))
+                await fs.promises.unlink(destinyPath)
+            throw err
+        }
     }
 
     public deleteFile = async (fileId: string) => 
@@ -36,7 +42,6 @@ export class BucketDB extends Bucket {
         if (fs.existsSync(path)) await fs.promises.unlink(path)
         const files = this.bucket.find({ filename: fileId })
         for await (const file of files) {
-            if (!file) throw new Error(`No file with id ${fileId}`)
             this.bucket.delete(new mongoose.Types.ObjectId(file._id))
         }
     }

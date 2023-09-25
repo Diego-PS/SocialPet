@@ -1,22 +1,22 @@
 import mongoose from 'mongoose'
 import { AbstractDatabase } from '../interfaces/AbstractDatabase'
-import { config } from '../../../config'
+import { MongoMemoryServer } from 'mongodb-memory-server'
 
-export class Database extends AbstractDatabase 
+export class MockDB extends AbstractDatabase 
 {
+    private mongod?: MongoMemoryServer
+
     protected connect = async () => 
     {
         // Connect implementation here...
-        await mongoose.connect(`${config.DB_CONNECTION}`)
-
-        // Successfully connected
-        console.log(`Connected to database`)
+        this.mongod = await MongoMemoryServer.create()
+        const uri = this.mongod.getUri()
+        await mongoose.connect(uri)
     }
 
     public disconnect = async () =>
     {
-        // Disconnect implementation here...
-        await mongoose.disconnect()
+        await this.mongod?.stop()
     }
 
     public clear = async () => 

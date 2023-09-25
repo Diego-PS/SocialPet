@@ -1,23 +1,16 @@
-import { IPost } from '../interfaces/IPost'
+import { IPost } from '../../interfaces/IPost'
 import { v4 } from 'uuid'
-import { services } from '../services'
-import { Pagination } from '../types/Pagination'
+import { services } from '../../services'
+import { Pagination } from '../../abstractions/Pagination'
 
-export interface IPostParams {
-    textContent?: string,
-    mediaId: string,
-}
+export type IPostParams = Omit<IPost, 'id'>
 
 export class Post implements IPost 
 {
     public static create = async (params: IPostParams) => 
     {
         const id = v4()
-        const newPost = await services.post.create({ 
-            id, 
-            textContent: params.textContent,
-            mediaFileId: params.mediaId,
-        })
+        const newPost = await services.post.create({ id, ...params })
         return newPost
     }
     

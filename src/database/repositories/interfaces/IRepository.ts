@@ -1,4 +1,4 @@
-import { Pagination } from '../../../types/Pagination'
+import { Pagination } from '../../../abstractions/Pagination'
 
 export interface IRepository<IEntity>
 {
