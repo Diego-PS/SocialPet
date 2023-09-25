@@ -4,7 +4,7 @@ import { useMockDB } from './useMockDB'
 export class Describe
 {
     public describe: () => void
-    constructor(public description: string, public children: Describe[] | Test[]) 
+    constructor(description: string, children: Describe[] | Test[]) 
     {
         if (description === '') throw new Error('A test must have a description')
         if (children.length == 0) throw new Error('You must have a least one test')

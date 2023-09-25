@@ -10,11 +10,7 @@ export class PostServices
 {
     async create(params: IPost) 
     {
-        if (!params.textContent && !params.mediaFileId) 
-            throw new Error('You cannot create a post with no content')
-
-        if (params.mediaFileId) await Buckets.media.uploadFile(params.mediaFileId)
-        
+        await Buckets.media.uploadFile(params.mediaFileId)
         const postInterface = await repositories.post.create(params)
         const post = new Post(postInterface)
         return post
@@ -38,7 +34,8 @@ export class PostServices
 
     async getById(id: string)
     {
-        const postInterface = await repositories.post.getById(id)
+        let postInterface: IPost
+        postInterface = await repositories.post.getById(id)
         const post = new Post(postInterface)
         return post
     }

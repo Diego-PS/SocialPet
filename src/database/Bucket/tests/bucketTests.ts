@@ -8,7 +8,7 @@ import fs from 'fs'
 const tests = 
 [
     new Test('check if file is removed from uploads folder', async () => {
-        copyImageToUploads(config.TEST_FILE_NAME)
+        await copyImageToUploads(config.TEST_FILE_NAME)
         const bucket = new BucketDB('test')
         await bucket.uploadFile(config.TEST_FILE_NAME)
         const uploadedPath = `${config.UPLOADS_PATH}/${config.TEST_FILE_NAME}`
@@ -16,7 +16,7 @@ const tests =
     }),
 
     new Test('check if file is downloaded sucessfully', async () => {
-        copyImageToUploads(config.TEST_FILE_NAME)
+        await copyImageToUploads(config.TEST_FILE_NAME)
         const bucket = new BucketDB('test')
         await bucket.uploadFile(config.TEST_FILE_NAME)
         await bucket.downloadFile(config.TEST_FILE_NAME,  config.DOWNLOADS_PATH)
@@ -35,7 +35,7 @@ const tests =
     }),
 
     new Test('check if file is deleted', async () => {
-        copyImageToUploads(config.TEST_FILE_NAME)
+        await copyImageToUploads(config.TEST_FILE_NAME)
         const bucket = new BucketDB('test')
         await bucket.uploadFile(config.TEST_FILE_NAME)
         await bucket.downloadFile(config.TEST_FILE_NAME, config.DOWNLOADS_PATH)
