@@ -1,3 +1,3 @@
-import { BucketType, DatabaseType } from '../implementations/types'
+import { BucketType } from '../implementations/types'
 
-export type CreateBucketType = (db: DatabaseType, name: string) => BucketType
+export type CreateBucketType = (name: string) => BucketType

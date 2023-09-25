@@ -7,13 +7,10 @@ export interface BucketsParams
 }
 
 export class Buckets {
-    public media: BucketDB
-    public text: BucketDB
-    public profilePicture: BucketDB
-
-    constructor(params: BucketsParams) {
-        this.media = new BucketDB({ name: 'media', ...params })
-        this.text = new BucketDB({ name: 'text', ...params })
-        this.profilePicture = new BucketDB({ name: 'profilePicture', ...params })
+    public static media: BucketDB
+    public static profilePicture: BucketDB
+    public static setup = () => {
+        Buckets.media = new BucketDB('media')
+        Buckets.profilePicture = new BucketDB('profilePicture')
     }
 }

@@ -1,10 +1,10 @@
 import { config } from '../config'
-import { db } from '../database/Database'
 import { repositories } from '../database/repositories'
 import { Post } from '../entities/Post'
 import { IPost } from '../interfaces/IPost'
 import { Pagination } from '../abstractions/Pagination'
 import fs from 'fs'
+import { Buckets } from '../database/Bucket/interfaces/Buckets'
 
 export class PostServices
 {
@@ -13,7 +13,7 @@ export class PostServices
         if (!params.textContent && !params.mediaFileId) 
             throw new Error('You cannot create a post with no content')
 
-        if (params.mediaFileId) await db.buckets.media.uploadFile(params.mediaFileId)
+        if (params.mediaFileId) await Buckets.media.uploadFile(params.mediaFileId)
         
         const postInterface = await repositories.post.create(params)
         const post = new Post(postInterface)
@@ -25,7 +25,7 @@ export class PostServices
         const post = await repositories.post.getById(id)
         if (!fs.existsSync(config.DOWNLOADS_PATH)) fs.mkdirSync(config.DOWNLOADS_PATH)
         if (post.mediaFileId && !fs.existsSync(`${config.DOWNLOADS_PATH}/${post.mediaFileId}`)) 
-            await db.buckets.media.downloadFile(post.mediaFileId, config.DOWNLOADS_PATH)
+            await Buckets.media.downloadFile(post.mediaFileId, config.DOWNLOADS_PATH)
         return { url: `${config.APP_URL}/static/${post.mediaFileId}` }
     }
 
@@ -46,7 +46,7 @@ export class PostServices
     async deleteById(id: string) 
     {
         const post = await repositories.post.getById(id)
-        if (post.mediaFileId) await db.buckets.media.deleteFile(post.mediaFileId)
+        if (post.mediaFileId) await Buckets.media.deleteFile(post.mediaFileId)
         await repositories.post.delete({ id })
     }
 }
