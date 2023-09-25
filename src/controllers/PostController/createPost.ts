@@ -29,7 +29,7 @@ export const createPost = async (req: CreatePostRequest, res: CreatePostResponse
         const newName = `${req.file.filename}.${extension}`
         console.log(newName)
         await fs.promises.rename(filePath, `${filePath}.${extension}`)
-        const post = await Post.create({ textContent: req.body.textContent, mediaId: newName })
+        const post = await Post.create({ textContent: req.body.textContent, mediaFileId: newName })
         return res.status(200).send({ id: post.id, fileId: post.mediaFileId, textContent: post.textContent })
     } catch (err) {
         if (err instanceof Error) res.status(500).send({ error: err.message ?? 'Something went wrong' })
