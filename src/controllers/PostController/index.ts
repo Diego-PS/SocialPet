@@ -2,9 +2,9 @@ import { createPost } from './createPost'
 import { deletePost } from './deletePost'
 import { getAllPosts } from './getAllPosts'
 
-export class PostController
+export const postController =
 {
-    createPost = createPost
-    deletePost = deletePost
-    getAllPosts = getAllPosts
+    createPost: createPost,
+    deletePost: deletePost,
+    getAllPosts: getAllPosts,
 }

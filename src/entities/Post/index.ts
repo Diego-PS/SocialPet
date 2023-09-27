@@ -17,7 +17,6 @@ export class Post implements IPost
     public static getAll = async (pagination?: Pagination) => await services.post.getAll(pagination)
     public static get = async (id: string) => await services.post.getById(id)
 
-
     id: string
     textContent?: string
     mediaFileId: string

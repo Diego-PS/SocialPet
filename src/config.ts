@@ -11,4 +11,5 @@ export const config = {
     DOWNLOADS_PATH: path.join(__dirname, '../tmp/downloads'),
     UPLOADS_PATH: path.join(__dirname, '../tmp/uploads'),
     APP_URL: process.env.APP_URL,
+    GET_CURRENT_TIME_IN_UTC_URL: 'https://timeapi.io/api/Time/current/zone?timeZone=Etc/Greenwich'
 }
