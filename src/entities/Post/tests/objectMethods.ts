@@ -1,3 +1,4 @@
+import { v4 } from 'uuid'
 import { IPostParams, Post } from '..'
 import { Describe } from '../../../abstractions/Test/Describe'
 import { Test } from '../../../abstractions/Test/Test'
@@ -10,7 +11,8 @@ const tests =
     new Test('Download media from post', async () => {
         await copyImageToUploads(config.TEST_FILE_NAME)
         const postParams: IPostParams = {
-            mediaFileId: config.TEST_FILE_NAME
+            mediaFileId: config.TEST_FILE_NAME,
+            petId: v4(),
         }
         const post = await Post.create(postParams)
         await post.download()
@@ -31,7 +33,8 @@ const tests =
     new Test('Delete post', async () => {
         await copyImageToUploads(config.TEST_FILE_NAME)
         const postParams: IPostParams = {
-            mediaFileId: config.TEST_FILE_NAME
+            mediaFileId: config.TEST_FILE_NAME,
+            petId: v4(),
         }
         const post = await Post.create(postParams)
         await post.delete()

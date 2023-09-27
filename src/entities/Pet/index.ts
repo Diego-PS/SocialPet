@@ -1,23 +1,24 @@
-import { IPost } from '../../interfaces/IPost'
 import { v4 } from 'uuid'
 import { services } from '../../services'
 import { Pagination } from '../../abstractions/Pagination'
 import { IPetWithoutCreated } from '../../services/PetServices'
 import { IPet } from '../../interfaces/IPet'
+import { IPostParams, Post } from '../Post'
 
 export type IPetParams = Omit<IPetWithoutCreated, 'id'>
+export type IPostParamsWithoutPetId = Omit<IPostParams, 'petId'>
 
 export class Pet implements IPet 
 {
-    // public static create = async (params: IPetParams) => 
-    // {
-    //     const id = v4()
-    //     const newPost = await services.post.create({ id, ...params })
-    //     return newPost
-    // }
+    public static create = async (params: IPetParams) => 
+    {
+        const id = v4()
+        const newPet = await services.pet.create({ id, ...params })
+        return newPet
+    }
     
-    // public static getAll = async (pagination?: Pagination) => await services.post.getAll(pagination)
-    // public static get = async (id: string) => await services.post.getById(id)
+    public static getAll = async (pagination?: Pagination) => await services.pet.getAll(pagination)
+    public static get = async (id: string) => await services.pet.getById(id)
 
     id: string
     publicId: string
@@ -32,4 +33,12 @@ export class Pet implements IPet
         this.profilePictureId = params.profilePictureId
         this.createdUTCDateTime = params.createdUTCDateTime
     }
+
+    public createPost = async (params: IPostParamsWithoutPetId) => {
+        const newPost = await Post.create({ ...params, petId: this.id })
+        return newPost
+    }
+
+    public getPosts = async () => await services.pet.getPostsFromPet(this.id)
+    public delete = async () => await services.pet.deleteById(this.id)
 }

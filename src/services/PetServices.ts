@@ -7,6 +7,7 @@ import fs from 'fs'
 import { Buckets } from '../database/Bucket/interfaces/Buckets'
 import { Time } from '../abstractions/Time'
 import { IPet } from '../interfaces/IPet'
+import { Pet } from '../entities/Pet'
 
 export type IPetWithoutCreated = Omit<IPet, 'createdUTCDateTime'>
 
@@ -19,39 +20,37 @@ export class PetServices
         const date = await Time.now()
         const createdUTCDateTime = date.toUTCString()
         const petPayload: IPet = { ...params, createdUTCDateTime }
-        const postInterface = await repositories.pet.create(petPayload)
-        const pet = new Post(postInterface)
-        return post
-    }
-
-    async download(id: string)
-    {
-        const post = await repositories.post.getById(id)
-        if (!fs.existsSync(config.DOWNLOADS_PATH)) fs.mkdirSync(config.DOWNLOADS_PATH)
-        if (post.mediaFileId && !fs.existsSync(`${config.DOWNLOADS_PATH}/${post.mediaFileId}`)) 
-            await Buckets.media.downloadFile(post.mediaFileId, config.DOWNLOADS_PATH)
-        return { url: `${config.APP_URL}/static/${post.mediaFileId}` }
+        const petInterface = await repositories.pet.create(petPayload)
+        const pet = new Pet(petInterface)
+        return pet
     }
 
     async getAll(pagination?: Pagination)
     {
-        const postInterfaces = await repositories.post.get({}, pagination)
-        const posts = postInterfaces.map(postInterface => new Post(postInterface))
-        return posts
+        const petInterfaces = await repositories.pet.get({}, pagination)
+        const pets = petInterfaces.map(petInterface => new Pet(petInterface))
+        return pets
     }
 
     async getById(id: string)
     {
-        let postInterface: IPost
-        postInterface = await repositories.post.getById(id)
-        const post = new Post(postInterface)
-        return post
+        const petInterface: IPet = await repositories.pet.getById(id)
+        const pet = new Pet(petInterface)
+        return pet
+    }
+
+    async getPostsFromPet(id: string, pagination?: Pagination)
+    {
+        const posts = await repositories.post.get({ petId: id }, pagination)
+        return posts
     }
 
     async deleteById(id: string) 
     {
-        const post = await repositories.post.getById(id)
-        if (post.mediaFileId) await Buckets.media.deleteFile(post.mediaFileId)
-        await repositories.post.delete({ id })
+        const pet = await repositories.pet.getById(id)
+        await repositories.post.delete({ petId: id })
+        if (pet.profilePictureId) 
+            await Buckets.profilePicture.deleteFile(pet.profilePictureId)
+        await repositories.pet.delete({ id })
     }
 }
