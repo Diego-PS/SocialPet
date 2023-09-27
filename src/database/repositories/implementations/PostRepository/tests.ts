@@ -8,7 +8,9 @@ const generatePost = (args?: { withTextContent?: boolean }) => {
     const id = v4()
     const mediaFileId = v4()
     const textContent = args?.withTextContent ? 'Some text content' : undefined
-    const post = { id, mediaFileId, textContent } as IPost
+    const createdUTCDateTime = (new Date()).toUTCString()
+    const petId = v4()
+    const post: IPost = { id, mediaFileId, textContent, createdUTCDateTime, petId }
     return post
 }
 
