@@ -1,13 +1,11 @@
-import { config } from '../config'
 import { repositories } from '../database/repositories'
-import { Post } from '../entities/Post'
-import { IPost } from '../interfaces/IPost'
 import { Pagination } from '../abstractions/Pagination'
-import fs from 'fs'
 import { Buckets } from '../database/Bucket/interfaces/Buckets'
 import { Time } from '../abstractions/Time'
 import { IPet } from '../interfaces/IPet'
 import { Pet } from '../entities/Pet'
+import fs from 'fs'
+import { config } from '../config'
 
 export type IPetWithoutCreated = Omit<IPet, 'createdUTCDateTime'>
 
@@ -39,6 +37,14 @@ export class PetServices
         return pet
     }
 
+    async getByPublicId(publicId: string)
+    {
+        const petInterfaces: IPet[] = await repositories.pet.get({ publicId })
+        const petInterface = petInterfaces[0]
+        const pet = new Pet(petInterface)
+        return pet
+    }
+
     async getPostsFromPet(id: string, pagination?: Pagination)
     {
         const posts = await repositories.post.get({ petId: id }, pagination)
@@ -52,5 +58,14 @@ export class PetServices
         if (pet.profilePictureId) 
             await Buckets.profilePicture.deleteFile(pet.profilePictureId)
         await repositories.pet.delete({ id })
+    }
+
+    async downloadProfilePic(id: string)
+    {
+        const pet = await repositories.pet.getById(id)
+        if (!fs.existsSync(config.DOWNLOADS_PATH)) fs.mkdirSync(config.DOWNLOADS_PATH)
+        if (pet.profilePictureId && !fs.existsSync(`${config.DOWNLOADS_PATH}/${pet.profilePictureId}`)) 
+            await Buckets.profilePicture.downloadFile(pet.profilePictureId, config.DOWNLOADS_PATH)
+        return { url: `${config.APP_URL}/static/${pet.profilePictureId}` }
     }
 }

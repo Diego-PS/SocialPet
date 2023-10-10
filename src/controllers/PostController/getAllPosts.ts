@@ -10,7 +10,7 @@ interface GetAllPostsReqBody {
 
 export type GetAllPostsRequest = Request<{}, {}, GetAllPostsReqBody>
 
-export interface IPostWithUrl extends Omit<IPost, 'id'> {
+export interface IPostWithUrl extends Omit<IPost, 'id' | 'petId'> {
     mediaUrl?: string
 }
 
@@ -38,9 +38,8 @@ const getPostsWithUrl = async (posts: Post[]) =>
     for (const post of posts) {
         const { url } = await post.download()
         postsWithUrl.push({ 
-            textContent: post.textContent, 
-            mediaFileId: post.mediaFileId, 
-            mediaUrl: url,
+            ...post,
+            mediaUrl: url
         })
     }
     return postsWithUrl

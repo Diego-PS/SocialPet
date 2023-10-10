@@ -3,22 +3,23 @@ import fs from 'fs'
 import { ErrorBody } from '../../types/ErrorBody'
 import { Pet } from '../../entities/Pet'
 
-interface CreatePostReqBody {
-    petPublicId: string,
-    textContent?: string,
+interface CreatePetReqBody {
+    name: string,
+    nickname: string,
 }
 
-export type CreatePostRequest = Request<{}, {}, CreatePostReqBody>
+export type CreatePetRequest = Request<{}, {}, CreatePetReqBody>
 
-interface CreatePostResBody {
+interface CreatePetResBody {
     id: string,
-    fileId: string,
-    textContent?: string,
+    fileId?: string,
+    name: string,
+    nickname: string,
 }
 
-export type CreatePostResponse = Response<ErrorBody | CreatePostResBody>
+export type CreatePetResponse = Response<ErrorBody | CreatePetResBody>
 
-export const createPost = async (req: CreatePostRequest, res: CreatePostResponse) =>
+export const createPet = async (req: CreatePetRequest, res: CreatePetResponse) =>
 {
     try {
         if (!req.file?.path) {
@@ -30,9 +31,8 @@ export const createPost = async (req: CreatePostRequest, res: CreatePostResponse
         const newName = `${req.file.filename}.${extension}`
         console.log(newName)
         await fs.promises.rename(filePath, `${filePath}.${extension}`)
-        const pet = await Pet.getByPublicId(req.body.petPublicId)
-        const post = await pet.createPost({ textContent: req.body.textContent, mediaFileId: newName })
-        return res.status(200).send({ id: post.id, fileId: post.mediaFileId, textContent: post.textContent })
+        const pet = await Pet.create({ name: req.body.name, publicId: req.body.nickname, profilePictureId: newName })
+        return res.status(200).send({ id: pet.id, name: req.body.name, nickname: req.body.nickname, fileId: pet.profilePictureId })
     } catch (err) {
         if (err instanceof Error) res.status(500).send({ error: err.message ?? 'Something went wrong' })
     }

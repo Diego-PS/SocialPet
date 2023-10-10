@@ -18,6 +18,7 @@ export class Pet implements IPet
     }
     
     public static getAll = async (pagination?: Pagination) => await services.pet.getAll(pagination)
+    public static getByPublicId = async (publicId: string) => await services.pet.getByPublicId(publicId)
     public static get = async (id: string) => await services.pet.getById(id)
 
     id: string
@@ -39,6 +40,7 @@ export class Pet implements IPet
         return newPost
     }
 
+    public downloadProfilePic = async () => await services.pet.downloadProfilePic(this.id)
     public getPosts = async () => await services.pet.getPostsFromPet(this.id)
     public delete = async () => await services.pet.deleteById(this.id)
 }

@@ -32,8 +32,15 @@ const tests =
         expect(JSON.stringify(retrievedPet)).toBe(JSON.stringify(pet))
     }),
 
+    new Test('Create new pet and find it by publicId', async () => {
+        await copyImageToUploads(config.TEST_FILE_NAME)
+        const petParams = getRandomPetParamsWithPic(config.TEST_FILE_NAME)
+        const pet = await Pet.create(petParams)
+        const retrievedPet = await Pet.getByPublicId(pet.publicId)
+        expect(JSON.stringify(retrievedPet)).toBe(JSON.stringify(pet))
+    }),
+
     new Test('Get all pets', async () => {
-        const petId = v4()
         const { newId: id1 } = await copyImageToUploadsWithNewId()
         const petParams1 = getRandomPetParamsWithPic(id1)
         const pet1 = await Pet.create(petParams1)

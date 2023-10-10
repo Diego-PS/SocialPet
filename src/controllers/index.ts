@@ -1,5 +1,7 @@
+import { petController } from './PetController'
 import { postController } from './PostController'
 
 export const controllers = {
-    post: postController
+    post: postController,
+    pet: petController,
 }
