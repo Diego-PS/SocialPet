@@ -10,6 +10,8 @@ const convertToIPost = (postDB: Document<unknown, {}, IPost> & IPost & {
     id: postDB.id,
     mediaFileId: postDB.mediaFileId,
     textContent: postDB.textContent,
+    createdUTCDateTime: postDB.createdUTCDateTime,
+    petId: postDB.petId
 })
 
 export class PostRepository implements IRepository<IPost>

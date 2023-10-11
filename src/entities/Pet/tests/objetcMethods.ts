@@ -1,5 +1,5 @@
 import { v4 } from 'uuid'
-import { IPostParams, Post } from '..'
+import { IPetParams, Pet } from '..'
 import { Describe } from '../../../abstractions/Test/Describe'
 import { Test } from '../../../abstractions/Test/Test'
 import { config } from '../../../config'
@@ -8,14 +8,15 @@ import fs from 'fs'
 
 const tests =
 [
-    new Test('Download media from post', async () => {
+    new Test('Download profile picture from pet', async () => {
         await copyImageToUploads(config.TEST_FILE_NAME)
-        const postParams: IPostParams = {
-            mediaFileId: config.TEST_FILE_NAME,
-            petId: v4(),
+        const petParams: IPetParams = {
+            name: 'test',
+            publicId: v4(),
+            profilePictureId: config.TEST_FILE_NAME,
         }
-        const post = await Post.create(postParams)
-        await post.download()
+        const pet = await Pet.create(petParams)
+        await pet.downloadProfilePic()
         const originalPath = `${config.PUBLIC_PATH}/${config.TEST_FILE_NAME}`
         const downloadedPath = `${config.DOWNLOADS_PATH}/${config.TEST_FILE_NAME}`
         const original = await fs.promises.readFile(originalPath)
@@ -30,16 +31,17 @@ const tests =
         expect(fs.existsSync(downloadedPath)).toBe(false)
     }),
 
-    new Test('Delete post', async () => {
+    new Test('Delete pet', async () => {
         await copyImageToUploads(config.TEST_FILE_NAME)
-        const postParams: IPostParams = {
-            mediaFileId: config.TEST_FILE_NAME,
-            petId: v4(),
+        const petParams: IPetParams = {
+            name: 'Test',
+            publicId: v4(),
+            profilePictureId: config.TEST_FILE_NAME,
         }
-        const post = await Post.create(postParams)
-        await post.delete()
-        const retrievedPosts = await Post.getAll()
-        expect(retrievedPosts.length).toBe(0)
+        const pet = await Pet.create(petParams)
+        await pet.delete()
+        const retrievedPets = await Pet.getAll()
+        expect(retrievedPets.length).toBe(0)
     })
 ]
 

@@ -5,13 +5,19 @@ import { IPost } from '../interfaces/IPost'
 import { Pagination } from '../abstractions/Pagination'
 import fs from 'fs'
 import { Buckets } from '../database/Bucket/interfaces/Buckets'
+import { Time } from '../abstractions/Time'
+
+export type IPostWithoutCreated = Omit<IPost, 'createdUTCDateTime'>
 
 export class PostServices
 {
-    async create(params: IPost) 
+    async create(params: IPostWithoutCreated) 
     {
         await Buckets.media.uploadFile(params.mediaFileId)
-        const postInterface = await repositories.post.create(params)
+        const date = await Time.now()
+        const createdUTCDateTime = date.toISOString()
+        const postPayload: IPost = { ...params, createdUTCDateTime }
+        const postInterface = await repositories.post.create(postPayload)
         const post = new Post(postInterface)
         return post
     }
@@ -34,8 +40,7 @@ export class PostServices
 
     async getById(id: string)
     {
-        let postInterface: IPost
-        postInterface = await repositories.post.getById(id)
+        const postInterface = await repositories.post.getById(id)
         const post = new Post(postInterface)
         return post
     }
