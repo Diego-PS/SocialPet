@@ -15,7 +15,7 @@ export class PostServices
     {
         await Buckets.media.uploadFile(params.mediaFileId)
         const date = await Time.now()
-        const createdUTCDateTime = date.toUTCString()
+        const createdUTCDateTime = date.toISOString()
         const postPayload: IPost = { ...params, createdUTCDateTime }
         const postInterface = await repositories.post.create(postPayload)
         const post = new Post(postInterface)
@@ -40,8 +40,7 @@ export class PostServices
 
     async getById(id: string)
     {
-        let postInterface: IPost
-        postInterface = await repositories.post.getById(id)
+        const postInterface = await repositories.post.getById(id)
         const post = new Post(postInterface)
         return post
     }

@@ -41,6 +41,6 @@ export class Pet implements IPet
     }
 
     public downloadProfilePic = async () => await services.pet.downloadProfilePic(this.id)
-    public getPosts = async () => await services.pet.getPostsFromPet(this.id)
+    public getPosts = async (pagination?: Pagination) => await services.pet.getPostsFromPet(this.id, pagination)
     public delete = async () => await services.pet.deleteById(this.id)
 }

@@ -6,6 +6,7 @@ import { IPet } from '../interfaces/IPet'
 import { Pet } from '../entities/Pet'
 import fs from 'fs'
 import { config } from '../config'
+import { Post } from '../entities/Post'
 
 export type IPetWithoutCreated = Omit<IPet, 'createdUTCDateTime'>
 
@@ -16,7 +17,7 @@ export class PetServices
         if(params.profilePictureId)
             await Buckets.profilePicture.uploadFile(params.profilePictureId)
         const date = await Time.now()
-        const createdUTCDateTime = date.toUTCString()
+        const createdUTCDateTime = date.toISOString()
         const petPayload: IPet = { ...params, createdUTCDateTime }
         const petInterface = await repositories.pet.create(petPayload)
         const pet = new Pet(petInterface)
@@ -47,7 +48,8 @@ export class PetServices
 
     async getPostsFromPet(id: string, pagination?: Pagination)
     {
-        const posts = await repositories.post.get({ petId: id }, pagination)
+        const postInterfaces = await repositories.post.get({ petId: id }, pagination)
+        const posts = postInterfaces.map(postInterface => new Post(postInterface))
         return posts
     }
 

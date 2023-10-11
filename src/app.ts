@@ -1,10 +1,4 @@
 import express from 'express'
-import { TestDB } from './database/models/TestDB'
-import path from 'path'
-import { db } from './database/Database'
-import multer from 'multer'
-import fs from 'fs'
-import { Post } from './entities/Post'
 import { router } from './routes'
 import { config } from './config'
 import bodyParser from 'body-parser'
@@ -18,14 +12,14 @@ app.get('/', (req, res) => {
     res.send({ satus: 'Main route' })
 })
 
-app.post('/', async (req, res) => {
-    const testDB = new TestDB()
-    const text = 'Teste 2'
-    const num = 2
-    Object.assign(testDB, {text, num})
-    await testDB.save()
-    res.send({ msg: `Created test with text ${text} and num ${num}` })
-})
+// app.post('/', async (req, res) => {
+//     const testDB = new TestDB()
+//     const text = 'Teste 2'
+//     const num = 2
+//     Object.assign(testDB, {text, num})
+//     await testDB.save()
+//     res.send({ msg: `Created test with text ${text} and num ${num}` })
+// })
 
 app.use(bodyParser.json())
 app.use(router)
