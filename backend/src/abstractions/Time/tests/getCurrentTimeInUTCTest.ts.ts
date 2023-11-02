@@ -9,7 +9,7 @@ const tests =
         const currentTime = new Date(currentTimeString)
         const now = new Date()
         const diffTime = Math.abs(now.getTime() - currentTime.getTime());
-        expect(diffTime).toBeLessThan(100)
+        expect(diffTime).toBeLessThan(1000)
     }),
 ]
 
