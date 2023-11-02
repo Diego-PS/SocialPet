@@ -10,7 +10,11 @@ export default function Teste() {
     const getPostsFromApi = async () => {
         try {
             const response = await apiRoutes.getAllPosts();
-            setPosts(response.data.posts);
+            const sortedPosts = response.data.posts.map(post => ({
+                ...post,
+                createdUTCDateTime: new Date(post.createdUTCDateTime) as any,
+            })).sort((a, b) => (b.createdUTCDateTime as Date).getTime() - (a.createdUTCDateTime as Date).getTime());
+            setPosts(sortedPosts);
         } catch (error) {
             console.error('Error fetching posts:', error);
         }
