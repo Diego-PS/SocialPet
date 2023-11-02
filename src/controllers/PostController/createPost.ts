@@ -25,11 +25,7 @@ export const createPost = async (req: CreatePostRequest, res: CreatePostResponse
             return res.status(500).send({ error: 'Upload was unsuccessful' })
         }
 
-        // add extension to filename
-        const filePath = req.file.path
-        const extension = req.file.originalname.split('.').at(-1)
-        const newName = `${req.file.filename}.${extension}`
-        await fs.promises.rename(filePath, `${filePath}.${extension}`)
+        const { newName } = await addExtension(req.file)
 
         const pet = await Pet.getByPublicId(req.body.petPublicId)
         const post = await pet.createPost({ textContent: req.body.textContent, mediaFileId: newName })
@@ -38,4 +34,12 @@ export const createPost = async (req: CreatePostRequest, res: CreatePostResponse
     } catch (err) {
         if (err instanceof Error) res.status(500).send({ error: err.message ?? 'Something went wrong' })
     }
+}
+
+const addExtension = async (file: Express.Multer.File) => 
+{
+    const extension = file.originalname.split('.').at(-1)
+    const newName = `${file.filename}.${extension}`
+    await fs.promises.rename(file.path, `${file.path}.${extension}`)
+    return { newName }
 }
