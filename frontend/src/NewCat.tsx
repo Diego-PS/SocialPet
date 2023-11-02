@@ -11,6 +11,15 @@ function AddNewCat() {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
   const [catname, setCatname] = useState<string>('');
   const [nickname, setNickName] = useState<string>('');
+  const [userCreated, setUserCreated] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const closeModal = () => {
+    setShowModal(false);
+    navs('/Teste');
+  };
+
+  const navs = useNavigate();
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCatname(e.target.value);
@@ -43,16 +52,20 @@ function AddNewCat() {
       const formData = new FormData();
 
       if (selectedFile) {
-        formData.append('mediaFile', selectedFile);
+        formData.append('profilePicture', selectedFile);
       }
+      formData.append('name', catname);
+      formData.append('nickname', nickname);
 
-      await api.post('/post/create', formData, {
+      await api.post('/pet/create', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       // Optionally, you can redirect the user or perform other actions after a successful post creation.
+      setUserCreated(true);
+      //navs('/Teste');
     } catch (error) {
       console.error('Error creating the post:', error);
     }
@@ -70,6 +83,16 @@ function AddNewCat() {
   return (
     <div>
       <Header />
+
+      {userCreated && (
+      <div>
+        <div className="modal-overlay" onClick={closeModal}></div>
+        <div className="modal">
+          <p>New cat created successfully!</p>
+          <button onClick={closeModal}>Close</button>
+        </div>
+      </div>
+    )}
       
       <div className="add-cat-container">
         

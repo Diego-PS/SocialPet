@@ -13,6 +13,8 @@ function CreatePost() {
   const [petNicknames, setPetNicknames] = useState<string[]>([]);
   const [selectedPetNickname, setSelectedPetNickname] = useState<string>('');
 
+  const navs = useNavigate();
+
   const handleTextContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextContent(e.target.value);
   };
@@ -37,7 +39,7 @@ function CreatePost() {
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
-      
+            
       if (selectedFile) {
         formData.append('media', selectedFile);
       }
@@ -51,6 +53,7 @@ function CreatePost() {
       });
 
       // Optionally, you can redirect the user or perform other actions after a successful post creation.
+      navs('/Teste');
     } catch (error) {
       console.error('Error creating the post:', error);
     }

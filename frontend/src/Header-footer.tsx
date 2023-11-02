@@ -17,17 +17,13 @@ function Footer() {
     navigate('/Teste');
   };
 
-  const goToSearchPage = () => {
-    navigate('/Search');
-  };
-
-  const goToProfilePage = () => {
-    navigate('/Profile');
-  };
-
   const goToAddPage = () => {
     navigate('/UploadPage');
   };
+
+  const goToNewCatPage = () => {
+    navigate('/NewCat');
+  }
 
   return (
     <header className="fixed-footer">
@@ -45,15 +41,9 @@ function Footer() {
             </a>
           </div>
 
-          <div className="search-button">
-            <a href="#" onClick={goToSearchPage}>
-              <img src={"search.png"} alt="Search icon"/>
-            </a>
-          </div>
-
-          <div className="profile-button">
-            <a href="#" onClick={goToProfilePage}>
-              <img src={"profile.png"} alt="Profile icon"/>
+          <div className="add-cat-button">
+            <a href="#" onClick={goToNewCatPage}>
+              <img src={"addcat.png"} alt="Add cat icon"/>
             </a>
           </div>
 
