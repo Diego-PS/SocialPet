@@ -27,9 +27,7 @@ export const createPet = async (req: CreatePetRequest, res: CreatePetResponse) =
         }
         const filePath = req.file.path
         const extension = req.file.originalname.split('.').at(-1)
-        console.log(req.file.path)
         const newName = `${req.file.filename}.${extension}`
-        console.log(newName)
         await fs.promises.rename(filePath, `${filePath}.${extension}`)
         const pet = await Pet.create({ name: req.body.name, publicId: req.body.nickname, profilePictureId: newName })
         return res.status(200).send({ id: pet.id, name: req.body.name, nickname: req.body.nickname, fileId: pet.profilePictureId })

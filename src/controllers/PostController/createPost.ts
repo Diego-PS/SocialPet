@@ -26,9 +26,7 @@ export const createPost = async (req: CreatePostRequest, res: CreatePostResponse
         }
         const filePath = req.file.path
         const extension = req.file.originalname.split('.').at(-1)
-        console.log(req.file.path)
         const newName = `${req.file.filename}.${extension}`
-        console.log(newName)
         await fs.promises.rename(filePath, `${filePath}.${extension}`)
         const pet = await Pet.getByPublicId(req.body.petPublicId)
         const post = await pet.createPost({ textContent: req.body.textContent, mediaFileId: newName })
