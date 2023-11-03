@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Page1.css';
 
 const TwoButtons: React.FC = () => {
@@ -9,8 +10,10 @@ const TwoButtons: React.FC = () => {
     };
   }, []);
 
+  const navs = useNavigate();
+
   const handleButtonClick = (buttonName: string) => {
-    console.log(`Button "${buttonName}" clicked!`);
+    navs('/Teste');
   };
 
   return (
@@ -18,8 +21,7 @@ const TwoButtons: React.FC = () => {
       <img className="logo" src="snapcat.png" />
 
       <div className="button-container">
-        <button className="button" onClick={() => handleButtonClick('Button 1')}>login</button>
-        <button className="button"onClick={() => handleButtonClick('Button 2')}>register</button>
+        <button className="button" onClick={() => handleButtonClick('Button 1')}>enter</button>
       </div>
     </div>
   );
