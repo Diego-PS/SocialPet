@@ -51,6 +51,11 @@ export default function Teste() {
     const formatTimeAgo = (dateString: string) => {
         const currentTime = new Date();
         const postTime = new Date(dateString);
+        const timeAgo = calculateTimeAgo(currentTime, postTime);
+        return timeAgo;
+    };
+
+    const calculateTimeAgo = (currentTime: Date, postTime: Date) => {
         const diffInMilliseconds = currentTime.getTime() - postTime.getTime();
         const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
