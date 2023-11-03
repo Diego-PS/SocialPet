@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 import { IPost } from './api/post/getAllPosts';
 import { apiRoutes } from './api';
 import { Header, Footer } from './Header-footer';
@@ -47,6 +48,25 @@ export default function Teste() {
         return null; // No media to render
     };
 
+    const formatTimeAgo = (dateString: string) => {
+        const currentTime = new Date();
+        const postTime = new Date(dateString);
+        const diffInMilliseconds = currentTime.getTime() - postTime.getTime();
+        const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+        if (diffInMilliseconds < 60000) {
+            return rtf.format(-Math.floor(diffInMilliseconds / 1000), 'second');
+        } else if (diffInMilliseconds < 3600000) {
+            return rtf.format(-Math.floor(diffInMilliseconds / 60000), 'minute');
+        } else if (diffInMilliseconds < 86400000) {
+            return rtf.format(-Math.floor(diffInMilliseconds / 3600000), 'hour');
+        } else if (diffInMilliseconds < 604800000) {
+            return rtf.format(-Math.floor(diffInMilliseconds / 86400000), 'day');
+        } else {
+            return rtf.format(-Math.floor(diffInMilliseconds / 604800000), 'week');
+        }
+    };
+
     return (
         <div className="Teste">
             <Header />
@@ -56,10 +76,13 @@ export default function Teste() {
                         <div className="user-info">
                             <img className="user-photo" src={post.pet.profilePictureUrl} alt={post.pet.name} />
                             <p className="user-name">@{post.pet.nickname}</p>
+                            
                         </div>
                         <div className="media">
                             {renderMedia(post)}
+                            <p className="time-ago">{formatTimeAgo(post.createdUTCDateTime)}</p>
                             {post.textContent && <p className="caption">{post.textContent}</p>}
+                            
                         </div>
                     </div>
                 ))}

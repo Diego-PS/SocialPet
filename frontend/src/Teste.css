@@ -51,3 +51,10 @@ body{
     font-weight: regular;
     font-size: 12px;
   }
+
+  .time-ago{
+    font-family: 'Poppins', sans-serif;
+    font-weight: regular;
+    font-size: 10px;
+    text-align: left;
+  }
