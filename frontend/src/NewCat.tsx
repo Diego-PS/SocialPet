@@ -1,6 +1,6 @@
-import { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from './api';
+import api from './api'; // Import your API instance
 import { Header, Footer } from './Header-footer';
 import './ImageUploadPage.css';
 import './BackButton.css';
@@ -14,38 +14,39 @@ function AddNewCat() {
   const [userCreated, setUserCreated] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const navs = useNavigate();
-
   const closeModal = () => {
     setShowModal(false);
     navs('/Feed');
   };
 
-  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const navs = useNavigate();
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCatname(e.target.value);
   };
 
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickName(e.target.value);
-  };
+  };  
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0];
-
+  
     if (file) {
       const reader = new FileReader();
-
+  
       reader.onload = (event) => {
         if (event.target) {
+          // Atualiza o estado da imagem com a URL da imagem carregada
           setImagePreviewUrl(event.target.result as string);
         }
       };
-
+  
       reader.readAsDataURL(file);
       setSelectedFile(file);
     }
   };
-
+   
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
@@ -63,15 +64,19 @@ function AddNewCat() {
       });
 
       setUserCreated(true);
+
     } catch (error) {
       console.error('Error creating the post:', error);
     }
+
+    console.log('Cat name:', catname);
+    console.log('Cat age:', nickname);
   };
 
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1);
+    navigate(-1); // Isso vai navegar de volta para a página anterior
   };
 
   return (
@@ -79,155 +84,75 @@ function AddNewCat() {
       <Header />
 
       {userCreated && (
-        <Modal onClose={closeModal} />
-      )}
+      <div>
+        <div className="modal-overlay" onClick={closeModal}></div>
+        <div className="modal">
+          <p>New cat created successfully!</p>
+          <button onClick={closeModal}>Close</button>
+        </div>
+      </div>
+    )}
+      
+      <div className="add-cat-container">
+        
+        <div className="container-back-and-title">
+          <div className="back-button">
+            <a href="#" onClick={goBack}>
+              <img src={"back-arrow.png"} alt="Back"/>
+            </a>
+          </div>
 
-      <AddCatContainer
-        goBack={goBack}
-        handleFileChange={handleFileChange}
-        imagePreviewUrl={imagePreviewUrl}
-        catname={catname}
-        nickname={nickname}
-        handleUsernameChange={handleUsernameChange}
-        handleEmailChange={handleEmailChange}
-        handleSubmit={handleSubmit}
-      />
+          <h2>New Cat</h2>
+        </div>
 
+        {/* Input de arquivo oculto */}
+        <input type="file" accept="image/*" onChange={handleFileChange} id="fileInput" style={{ display: 'none' }} />
+
+        {/* Exibir a imagem carregada ou o botão de upload */}
+        {imagePreviewUrl ? (
+          <div className="cat-image-preview">
+            <img src={imagePreviewUrl} alt="Uploaded" />
+          </div>
+        ) : (
+          <label className="upload-cat-button" htmlFor="fileInput">
+            <div className="button-content">
+              <img src="uploadcat.png" alt="Upload Button" />
+              <p>Add a cat profile photo</p>
+            </div>
+          </label>
+        )}
+
+        <form onSubmit={handleSubmit}>
+        
+            <div className="form-group">
+            <input
+                type="text"
+                id="catsname"
+                name="catsname"
+                placeholder="Cat's name"
+                value={catname}
+                onChange={handleUsernameChange}
+                required
+            />
+            </div>
+
+            <div className="form-group">
+            <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Nickname"
+                value={nickname}
+                onChange={handleEmailChange}
+                required
+            />
+            </div>
+        </form>
+        
+        <button onClick={handleSubmit}>Add</button>
+      </div>
       <Footer />
     </div>
-  );
-}
-
-function Modal({ onClose }: { onClose: () => void }) {
-  return (
-    <div>
-      <div className="modal-overlay" onClick={onClose}></div>
-      <div className="modal">
-        <p>New cat created successfully!</p>
-        <button onClick={onClose}>Close</button>
-      </div>
-    </div>
-  );
-}
-
-function AddCatContainer({
-  goBack,
-  handleFileChange,
-  imagePreviewUrl,
-  catname,
-  nickname,
-  handleUsernameChange,
-  handleEmailChange,
-  handleSubmit,
-}: {
-  goBack: () => void;
-  handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  imagePreviewUrl: string | null;
-  catname: string;
-  nickname: string;
-  handleUsernameChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: () => void;
-}) {
-  return (
-    <div className="add-cat-container">
-      <ContainerBackAndTitle goBack={goBack} />
-      <ImageUpload
-        handleFileChange={handleFileChange}
-        imagePreviewUrl={imagePreviewUrl}
-      />
-      <CatForm
-        catname={catname}
-        nickname={nickname}
-        handleUsernameChange={handleUsernameChange}
-        handleEmailChange={handleEmailChange}
-        handleSubmit={handleSubmit}
-      />
-    </div>
-  );
-}
-
-function ContainerBackAndTitle({ goBack }: { goBack: () => void }) {
-  return (
-    <div className="container-back-and-title">
-      <div className="back-button">
-        <a href="#" onClick={goBack}>
-          <img src={"back-arrow.png"} alt="Back" />
-        </a>
-      </div>
-
-      <h2>New Cat</h2>
-    </div>
-  );
-}
-
-function ImageUpload({
-  handleFileChange,
-  imagePreviewUrl,
-}: {
-  handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  imagePreviewUrl: string | null;
-}) {
-  return (
-    <div>
-      <input type="file" accept="image/*" onChange={handleFileChange} id="fileInput" style={{ display: 'none' }} />
-
-      {imagePreviewUrl ? (
-        <div className="cat-image-preview">
-          <img src={imagePreviewUrl} alt="Uploaded" />
-        </div>
-      ) : (
-        <label className="upload-cat-button" htmlFor="fileInput">
-          <div className="button-content">
-            <img src="uploadcat.png" alt="Upload Button" />
-            <p>Add a cat profile photo</p>
-          </div>
-        </label>
-      )}
-    </div>
-  );
-}
-
-function CatForm({
-  catname,
-  nickname,
-  handleUsernameChange,
-  handleEmailChange,
-  handleSubmit,
-}: {
-  catname: string;
-  nickname: string;
-  handleUsernameChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleEmailChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  handleSubmit: () => void;
-}) {
-  return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          type="text"
-          id="catsname"
-          name="catsname"
-          placeholder="Cat's name"
-          value={catname}
-          onChange={handleUsernameChange}
-          required
-        />
-      </div>
-
-      <div className="form-group">
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Nickname"
-          value={nickname}
-          onChange={handleEmailChange}
-          required
-        />
-      </div>
-      <button onClick={handleSubmit}>Add</button>
-    </form>
   );
 }
 
