@@ -35,7 +35,7 @@ export default function Teste() {
                     <img src={post.mediaUrl} alt={post.textContent || ''} />
                 );
             } else {
-                // It's assumed to be a video (adjust this logic if needed)
+                // It's assumed to be a video 
                 return (
                     <video controls>
                         <source src={post.mediaUrl} type="video/mp4" />
