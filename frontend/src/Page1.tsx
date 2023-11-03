@@ -12,7 +12,7 @@ const TwoButtons: React.FC = () => {
 
   const navs = useNavigate();
 
-  const handleButtonClick = (buttonName: string) => {
+  const handleButtonClick = () => {
     navs('/Teste');
   };
 
@@ -21,7 +21,7 @@ const TwoButtons: React.FC = () => {
       <img className="logo" src="snapcat.png" />
 
       <div className="button-container">
-        <button className="button" onClick={() => handleButtonClick('Button 1')}>enter</button>
+        <button className="button" onClick={() => handleButtonClick()}>enter</button>
       </div>
     </div>
   );

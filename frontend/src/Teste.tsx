@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { formatDistanceToNow } from 'date-fns';
 import { IPost } from './api/post/getAllPosts';
 import { apiRoutes } from './api';
 import { Header, Footer } from './Header-footer';
