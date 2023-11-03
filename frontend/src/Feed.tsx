@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { IPost } from './api/post/getAllPosts';
 import { apiRoutes } from './api';
 import { Header, Footer } from './Header-footer';
-import './Teste.css';
+import './Feed.css';
 
-export default function Teste() {
+export default function Feed() {
     const [posts, setPosts] = useState([] as IPost[]);
 
     const getPostsFromApi = async () => {

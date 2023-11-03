@@ -52,7 +52,7 @@ function CreatePost() {
         },
       });
 
-      navs('/Teste');
+      navs('/Feed');
     } catch (error) {
       console.error('Error creating the post:', error);
     }

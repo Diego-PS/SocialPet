@@ -18,7 +18,7 @@ function AddNewCat() {
 
   const closeModal = () => {
     setShowModal(false);
-    navs('/Teste');
+    navs('/Feed');
   };
 
   const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
