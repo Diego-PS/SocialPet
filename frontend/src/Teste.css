@@ -1,0 +1,60 @@
+body{
+    background-color: #FDFDF5; 
+}
+
+.content{
+  margin-top: 90px;
+  margin-bottom: 60px;
+  text-align: left;
+}
+
+.media {
+    margin: 10px;
+    /*margin-top: 150px;
+    margin-top: 60px;*/
+  }
+  
+  .media img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+  }
+  
+  .media video {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .user-photo {
+    width: 40px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    border-radius: 50%;
+    margin-right: 10px; /* Add some spacing between photo and name */
+  }
+  
+  .user-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .caption {
+    font-family: 'Poppins', sans-serif;
+    font-weight: regular;
+    font-size: 12px;
+  }
+
+  .time-ago{
+    font-family: 'Poppins', sans-serif;
+    font-weight: regular;
+    font-size: 10px;
+    text-align: left;
+  }
