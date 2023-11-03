@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPets, GetAllPetsResBody, IPet } from './api/pet/getAllPets';
+import { getAllPets, IPet } from './api/pet/getAllPets';
 import api from './api'; // Import your API instance
 import { Header, Footer } from './Header-footer';
 import './ImageUploadPage.css';
