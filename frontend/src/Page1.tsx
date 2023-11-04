@@ -13,7 +13,7 @@ const TwoButtons: React.FC = () => {
   const navs = useNavigate();
 
   const handleButtonClick = () => {
-    navs('/Teste');
+    navs('/Feed');
   };
 
   return (

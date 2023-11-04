@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { IPost } from './api/post/getAllPosts';
 import { apiRoutes } from './api';
 import { Header, Footer } from './Header-footer';
-import './Teste.css';
+import './Feed.css';
 
-export default function Teste() {
+export default function Feed() {
     const [posts, setPosts] = useState([] as IPost[]);
 
     const getPostsFromApi = async () => {
@@ -34,7 +34,7 @@ export default function Teste() {
                     <img src={post.mediaUrl} alt={post.textContent || ''} />
                 );
             } else {
-                // It's assumed to be a video (adjust this logic if needed)
+                // It's assumed to be a video 
                 return (
                     <video controls>
                         <source src={post.mediaUrl} type="video/mp4" />
@@ -50,6 +50,11 @@ export default function Teste() {
     const formatTimeAgo = (dateString: string) => {
         const currentTime = new Date();
         const postTime = new Date(dateString);
+        const timeAgo = calculateTimeAgo(currentTime, postTime);
+        return timeAgo;
+    };
+
+    const calculateTimeAgo = (currentTime: Date, postTime: Date) => {
         const diffInMilliseconds = currentTime.getTime() - postTime.getTime();
         const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
