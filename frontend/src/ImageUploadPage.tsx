@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllPets, IPet } from './api/pet/getAllPets';
 import api from './api'; // Import your API instance
@@ -113,7 +113,7 @@ function RenderHeaderAndBackButton({ goBack }: { goBack: () => void }) {
 
 function RenderImageUpload({ handleFileChange, imagePreviewUrl }: { handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void, imagePreviewUrl: string | null }) {
   return (
-    <React.Fragment>
+    <Fragment>
       <input type="file" accept="image/*" onChange={handleFileChange} id="fileInput" style={{ display: 'none' }} />
 
       {imagePreviewUrl ? (
@@ -127,7 +127,7 @@ function RenderImageUpload({ handleFileChange, imagePreviewUrl }: { handleFileCh
       )}
 
       <text> What pet is in this image?</text>
-      </React.Fragment>
+      </Fragment>
   );
 }
 
