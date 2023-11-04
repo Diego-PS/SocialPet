@@ -14,7 +14,7 @@ function Footer() {
   const navigate = useNavigate();
 
   const goToHomePage = () => {
-    navigate('/Teste');
+    navigate('/Feed');
   };
 
   const goToAddPage = () => {

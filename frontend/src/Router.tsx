@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Page1 from './Page1';
-import Teste from "./Teste";
+import Feed from "./Feed";
 import Login from "./Login";
 import ImageUploadPage from "./ImageUploadPage";
 import Search from "./Search";
@@ -13,7 +13,7 @@ export const Router = () => {
         <BrowserRouter>
             <Routes>
                 <Route element = { <Page1 /> } path="/" />
-                <Route element = { <Teste /> } path="/Teste" />
+                <Route element = { <Feed /> } path="/Feed" />
                 <Route element = { <Login /> } path="/Login" />
                 <Route element = { <ImageUploadPage /> } path="/UploadPage" />
                 <Route element = { <Search /> } path="/Search" />

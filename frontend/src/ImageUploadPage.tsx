@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllPets, IPet } from './api/pet/getAllPets';
 import api from './api'; // Import your API instance
@@ -52,8 +52,7 @@ function CreatePost() {
         },
       });
 
-      // Optionally, you can redirect the user or perform other actions after a successful post creation.
-      navs('/Teste');
+      navs('/Feed');
     } catch (error) {
       console.error('Error creating the post:', error);
     }
@@ -81,10 +80,26 @@ function CreatePost() {
   return (
     <div>
       <Header />
-      
+
       <div className="create-post-container">
-        
-        <div className="container-back-and-title">
+        <RenderHeaderAndBackButton goBack={goBack} />
+        <RenderImageUpload handleFileChange={handleFileChange} imagePreviewUrl={imagePreviewUrl} />
+        <RenderPetSelection
+          petNicknames={petNicknames}
+          selectedPetNickname={selectedPetNickname}
+          setSelectedPetNickname={setSelectedPetNickname}
+        />
+        <RenderCaption textContent={textContent} handleTextContentChange={handleTextContentChange} />
+        <button onClick={handleSubmit}>Add</button>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+function RenderHeaderAndBackButton({ goBack }: { goBack: () => void }) {
+  return (
+       <div className="container-back-and-title">
           <div className="back-button">
             <a href="#" onClick={goBack}>
               <img src={"back-arrow.png"} alt="Back" />
@@ -92,48 +107,71 @@ function CreatePost() {
           </div>
 
           <h2>New Post</h2>
+       </div>
+  );
+}
+
+function RenderImageUpload({ handleFileChange, imagePreviewUrl }: { handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void, imagePreviewUrl: string | null }) {
+  return (
+    <Fragment>
+      <input type="file" accept="image/*" onChange={handleFileChange} id="fileInput" style={{ display: 'none' }} />
+
+      {imagePreviewUrl ? (
+        <div className="image-preview">
+          <img src={imagePreviewUrl} alt="Uploaded" />
         </div>
+      ) : (
+        <label className="upload-button" htmlFor="fileInput">
+          Choose file...
+        </label>
+      )}
 
-        <input type="file" accept="image/*" onChange={handleFileChange} id="fileInput" style={{ display: 'none' }} />
+      <text> What pet is in this image?</text>
+      </Fragment>
+  );
+}
 
-        {imagePreviewUrl ? (
-          <div className="image-preview">
-            <img src={imagePreviewUrl} alt="Uploaded" />
-          </div>
-        ) : (
-          <label className="upload-button" htmlFor="fileInput">
-            Choose file...
-          </label>
-        )}
-
-        <text> What pet is in this image?</text>
-
-        <div className="pet-selection">
-          <label htmlFor="petNickname"></label>
-          <select
-            id="petNickname"
-            value={selectedPetNickname}
-            onChange={(e) => setSelectedPetNickname(e.target.value)}
-          >
-            <option value="">-- Select a pet --</option>
-            {petNicknames.map((nickname) => (
-              <option key={nickname} value={nickname}>
-                {nickname}
-              </option>
-            ))}
-          </select>
-        </div>
+function RenderPetSelection({
+  petNicknames,
+  selectedPetNickname,
+  setSelectedPetNickname,
+}: {
+  petNicknames: string[];
+  selectedPetNickname: string;
+  setSelectedPetNickname: (value: string) => void;
+}) {
+  return (
+    <div className="pet-selection">
+      <label htmlFor="petNickname"></label>
+      <select
+        id="petNickname"
+        value={selectedPetNickname}
+        onChange={(e) => setSelectedPetNickname(e.target.value)}
+      >
+        <option value="">-- Select a pet --</option>
+        {petNicknames.map((nickname) => (
+          <option key={nickname} value={nickname}>
+            {nickname}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
         
+function RenderCaption({
+  textContent,
+  handleTextContentChange,
+}: {
+  textContent: string;
+  handleTextContentChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+}) {
+  return (
         <textarea 
           placeholder="Enter your caption..."
           value={textContent}
           onChange={handleTextContentChange}
         />
-        
-        <button onClick={handleSubmit}>Add</button>
-      </div>
-      <Footer />
-    </div>
   );
 }
 

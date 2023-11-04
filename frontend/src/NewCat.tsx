@@ -16,7 +16,7 @@ function AddNewCat() {
 
   const closeModal = () => {
     setShowModal(false);
-    navs('/Teste');
+    navs('/Feed');
   };
 
   const navs = useNavigate();
@@ -63,9 +63,8 @@ function AddNewCat() {
         },
       });
 
-      // Optionally, you can redirect the user or perform other actions after a successful post creation.
       setUserCreated(true);
-      //navs('/Teste');
+
     } catch (error) {
       console.error('Error creating the post:', error);
     }
