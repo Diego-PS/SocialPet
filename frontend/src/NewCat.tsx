@@ -12,7 +12,7 @@ function AddNewCat() {
   const [catname, setCatname] = useState<string>('');
   const [nickname, setNickName] = useState<string>('');
   const [userCreated, setUserCreated] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [_, setShowModal] = useState(false);
 
   const closeModal = () => {
     setShowModal(false);
