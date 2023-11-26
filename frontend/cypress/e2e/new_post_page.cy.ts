@@ -31,5 +31,6 @@ describe('New Post Addition', () => {
     // Check if the user is redirected to the feed page after adding the post
     cy.url().should('include', '/Feed') 
   
+    cy.request('DELETE', 'https://social-pet-backend.onrender.com/pet/delete/Fluffsters', {})
   })
 })
